@@ -45,7 +45,7 @@ public class terrainGenerator : MonoBehaviour
         generateMap(terrain, Random.Range(3f, 7f));
         paintMap(terrain);
         fillTreeInstances(terrain);
-        //fillDetailMap(terrain);
+        fillDetailMap(terrain);
 
         // Place Player ontop of Terrain
         GameObject player = ((GameObject)GameObject.Find("Player"));
@@ -197,7 +197,7 @@ public class terrainGenerator : MonoBehaviour
 
         PerlinNoise m_treeNoise = new PerlinNoise(Random.Range(0, 100));
  
-        int m_treeSpacing = ((int) Random.Range(96f, 256f)); // 96 to 256
+        int m_treeSpacing = ((int) Random.Range(128f, 256f)); // 96 to 256
         float m_treeFrq = m_terrainSize;
 
         for (int x = 0; x < m_terrainSize; x += m_treeSpacing)
@@ -220,7 +220,7 @@ public class terrainGenerator : MonoBehaviour
                 // by 90 to get an alpha blending value in the range 0..1.
                 float frac = angle / 90.0f;
 
-                if (frac < 0.45f) //make sure tree are not on steep slopes
+                if (frac < 0.2f) //make sure tree are not on steep slopes
                 {
                     float worldPosX = x;
                     float worldPosZ = z;
