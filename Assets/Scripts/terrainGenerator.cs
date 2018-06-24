@@ -4,21 +4,15 @@ using System.Linq; // used for Sum of array
 public class terrainGenerator : MonoBehaviour
 {
     private int  m_terrainSize; // terrain width
-    private TerrainData ogData;
 
     /**
      * Initialization Method
      **/
     void Start()
     {
-        ogData = this.GetComponent<Terrain>().terrainData;
         initTerrain();
     }
-
-    void OnApplicationQuit()
-    {
-        this.GetComponent<Terrain>().terrainData = ogData;
-    }
+    
 
     /**
      * Called once per frame
@@ -27,7 +21,7 @@ public class terrainGenerator : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Escape))
         {
-            initTerrain();
+            Application.Quit();
         }
     }
 
@@ -38,7 +32,7 @@ public class terrainGenerator : MonoBehaviour
      **/
     void initTerrain()
     {
-        m_terrainSize = Mathf.ClosestPowerOfTwo(Random.Range(512, 2048));
+        m_terrainSize = Mathf.ClosestPowerOfTwo(Random.Range(1024, 1024));
 
         Terrain terrain = this.GetComponent<Terrain>();
 
@@ -65,9 +59,9 @@ public class terrainGenerator : MonoBehaviour
         // Generate Terrain using dataArray as height values
 
         Vector2 offset = Vector2.zero;
-        float frq = Random.Range(500f, 1000f); // how smooth/rough? (low = rough, high = smooth)
-        float amp = Random.Range(0.3f,0.45f); // how strong? (0.5 is ideal)
-        int octaves = Random.Range(8, 15); // number of octaves
+        float frq = Random.Range(600f, 800f); // how smooth/rough? (low = rough, high = smooth)
+        float amp = Random.Range(0.1f,0.2f); // how strong? (0.5 is ideal)
+        int octaves = Random.Range(8, 12); // number of octaves
         // declare the data array
         float[,] dataArray = new float[m_terrainSize, m_terrainSize];
 
@@ -180,10 +174,10 @@ public class terrainGenerator : MonoBehaviour
 
     void fillTreeInstances(Terrain terrain)
     {
-        terrain.treeDistance = Random.Range(1000f,2000f); //The distance at which trees will no longer be drawn
-        terrain.treeBillboardDistance = Random.Range(600f, 1000f); //The distance at which trees meshes will turn into tree billboards
-        terrain.treeCrossFadeLength = Random.Range(15f, 25f); //As trees turn to billboards there transform is rotated to match the meshes, a higher number will make this transition smoother
-        terrain.treeMaximumFullLODCount = ((int) Random.Range(450f, 550f)); //The maximum number of trees that will be drawn in a certain area. 
+        terrain.treeDistance = 2000f; //The distance at which trees will no longer be drawn
+        terrain.treeBillboardDistance = 1000f; //The distance at which trees meshes will turn into tree billboards
+        terrain.treeCrossFadeLength = 25f; //As trees turn to billboards there transform is rotated to match the meshes, a higher number will make this transition smoother
+        terrain.treeMaximumFullLODCount = ((int) Random.Range(2f, 4f)); //The maximum number of trees that will be drawn in a certain area. 
 
         TreePrototype[] m_treeProtoTypes = new TreePrototype[2];
 
@@ -197,8 +191,8 @@ public class terrainGenerator : MonoBehaviour
 
         PerlinNoise m_treeNoise = new PerlinNoise(Random.Range(0, 100));
  
-        int m_treeSpacing = ((int) Random.Range(128f, 256f)); // 96 to 256
-        float m_treeFrq = m_terrainSize;
+        int m_treeSpacing = ((int) Random.Range(2048f, 4096f)); // 96 to 256
+        float m_treeFrq = 0.001f;
 
         for (int x = 0; x < m_terrainSize; x += m_treeSpacing)
         {
@@ -220,7 +214,7 @@ public class terrainGenerator : MonoBehaviour
                 // by 90 to get an alpha blending value in the range 0..1.
                 float frac = angle / 90.0f;
 
-                if (frac < 0.2f) //make sure tree are not on steep slopes
+                if (frac < 0.1f) //make sure tree are not on steep slopes
                 {
                     float worldPosX = x;
                     float worldPosZ = z;
